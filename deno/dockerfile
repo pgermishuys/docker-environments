@@ -1,0 +1,14 @@
+FROM ubuntu:bionic
+
+# install deno
+RUN apt-get update -y 
+RUN apt-get install curl unzip -y
+RUN curl -fsSL https://deno.land/x/install/install.sh | sh
+
+ENV DENO_INSTALL="/root/.deno"
+ENV PATH="$DENO_INSTALL/bin:${PATH}"
+
+ENTRYPOINT [ "deno" ]
+
+# deno is secure by default which is why we need to --allow-read for Deno to read for example the current working directory (console.log(Deno.cwd()))
+CMD ["run", "--allow-read", "https://deno.land/std/examples/welcome.ts"]
